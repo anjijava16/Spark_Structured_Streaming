@@ -45,6 +45,43 @@ StructuredNetworkWordCount maintains a running word count of text data received 
 		  
 		```
 
+
+
+
+val outputPathDir = workingDir + "/output.parquet" // A subdirectory for our output
+val checkpointPath = workingDir + "/checkpoint"    // A subdirectory for our checkpoint & W-A logs
+val myStreamName = "lesson02_ss"                   // An arbitrary name for the stream  
+
+# Output Modes
+		Mode	    Example	Notes
+		Complete	dsw.outputMode("complete")	The entire updated Result Table is written to the sink. The individual sink implementation decides how to handle writing the entire table.
+		Append	    dsw.outputMode("append")	Only the new rows appended to the Result Table since the last trigger are written to the sink.
+		Update	    dsw.outputMode("update")	Only the rows in the Result Table that were updated since the last trigger will be outputted to the sink. Since Spark 2.1.1
+		In the example below, we are writing to a Parquet directory which only supports the append mode:
+
+
+# Managing Streaming Queries
+
+	id	get unique identifier of the running query that persists across restarts from checkpoint data
+	runId	get unique id of this run of the query, which will be generated at every start/restart
+	name	get name of the auto-generated or user-specified name
+	explain()	print detailed explanations of the query
+	stop()	stop query
+	awaitTermination()	block until query is terminated, with stop() or with error
+	exception	exception if query terminated with error
+	recentProgress	array of most recent progress updates for this query
+	lastProgress	most recent progress update of this streaming query
+
+# Output Sinks
+	DataStreamWriter.format accepts the following values, among others:
+
+	Output Sink	Example	Notes
+	File	dsw.format("parquet"), dsw.format("csv")...	Dumps the Result Table to a file. Supports Parquet, json, csv, etc.
+	Kafka	dsw.format("kafka")	Writes the output to one or more topics in Kafka
+	Console	dsw.format("console")	Prints data to the console (useful for debugging)
+	Memory	dsw.format("memory")	Updates an in-memory table, which can be queried through Spark SQL or the DataFrame API
+	foreach	dsw.foreach(writer: ForeachWriter)	This is your "escape hatch", allowing you to write your own type of sink.
+	Delta	dsw.format("delta")	A proprietary sink
  # iii. Read From Kafka Source (Kafka Server)
 
 		```
