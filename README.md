@@ -258,6 +258,10 @@ writeStream
     .queryName("tableName")
     .start()		
 ```
+# Commit Asyn in Spark Streaming:
+https://stackoverflow.com/questions/49375384/spark-kafka-streaming-multi-partition-commitasync-issue
+
+
 # iv Write into Kafka Topic:
   ```
   
@@ -282,6 +286,8 @@ writeStream
  .awaitTermination()
  
   ```
+  
+
 
 # Write into foreachBatch (MongoDB)
 ```
